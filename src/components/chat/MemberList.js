@@ -7,14 +7,14 @@ const MemberList = ({ members }) => {
     <div>
       <h4>List of members</h4>
       <ul>
-        {members.map((member, i) => <MemberItem key={i} member={member} />)}
+        {Object.values(members).map((member, i) => <MemberItem key={i} member={member} />)}
       </ul>
     </div>
   );
 };
 
 MemberList.propTypes = {
-  members: React.PropTypes.array.isRequired
+  members: React.PropTypes.object.isRequired
 };
 
 export default MemberList;

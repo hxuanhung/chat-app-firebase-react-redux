@@ -22,9 +22,15 @@ export const roomsReceivedSuccess = () => ({
   type: types.ROOMS_RECEIVED_SUCCESS,
   receivedAt: Date.now()
 });
-export const roomMembersReceivedSuccess = () => ({
+export const roomMemberInfoLoadedSuccess = () => ({
+  type: types.ROOM_MEMBER_INFO_LOADED_SUCCESS
+});
+export const roomMemberReceivedSuccess = () => ({
   type: types.ROOM_MEMBERS_RECEIVED_SUCCESS,
   receivedAt: Date.now()
+});
+export const roomMembersIdsReceivedSuccess = () => ({
+  type: types.ROOM_MEMBERS_IDS_RECEIVED_SUCCESS
 });
 export const startFetchingRoom = () => ({
   type: types.START_FETCHING_ROOMS
@@ -37,9 +43,10 @@ export const addRoom = room => ({
   type: types.ADD_ROOM,
   ...room
 });
-export const addRoomMember = member => ({
+export const addRoomMember = (member, roomId) => ({
   type: types.ADD_ROOM_MEMBER,
-  ...member
+  ...member,
+  roomId
 });
 
 export const fetchRooms = () => {
@@ -59,7 +66,8 @@ export const fetchRoomMembers = roomId => {
     dispatch(startFetchingRoomMembers());
     firebaseApi.fetchRoomMembers(roomId).on("value", snapshot => {
       const members = snapshot.val() || [];
-      dispatch(receiveRoomMembersIds(members));
+      console.log(members);
+      dispatch(receiveRoomMembersIds(members, roomId));
     });
   };
 };
@@ -73,19 +81,20 @@ export const receiveRooms = rooms => {
     dispatch(roomsReceivedSuccess());
   };
 };
-export const receiveRoomMembersIds = members => {
+export const receiveRoomMembersIds = (members, roomId) => {
   return dispatch => {
-    dispatch(roomMembersReceivedSuccess());
+    dispatch(roomMembersIdsReceivedSuccess());
     Object.keys(members).forEach(memberId => {
+      console.log(`receiveRoomMembersIds`, memberId);
       dispatch(beginAjaxCall());
       firebaseApi
         .GetChildAddedByKeyOnce("/users", memberId)
         .then(user => {
-          dispatch(addRoomMember(user.val()));
-          dispatch(roomMembersReceivedSuccess());
+          dispatch(addRoomMember(user.val(), roomId));
+          dispatch(roomMemberReceivedSuccess());
         })
         .catch(error => {
-          dispatch(beginAjaxCall());
+          dispatch(ajaxCallError(error));
           // @TODO better error handling
           throw error;
         });
@@ -93,24 +102,6 @@ export const receiveRoomMembersIds = members => {
   };
 };
 
-export function loadRoomMemberInfo(memberId) {
-  console.log(`loadRoomMemberInfo`);
-  return dispatch => {
-    console.log(`loadRoomMemberInfo 2`);
-    dispatch(beginAjaxCall());
-    console.log(`loadRoomMemberInfo`, memberId);
-    firebaseApi
-      .GetChildAddedByKeyOnce("/users", memberId)
-      .then(user => {
-        dispatch(addRoomMember(user));
-      })
-      .catch(error => {
-        dispatch(beginAjaxCall());
-        // @TODO better error handling
-        throw error;
-      });
-  };
-}
 export function joinRoom(roomId, user) {
   return dispatch => {
     dispatch(beginAjaxCall());

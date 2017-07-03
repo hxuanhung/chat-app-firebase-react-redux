@@ -22,7 +22,7 @@ export default {
     isFetching: false
   },
   members: {
-    data:[],
+    data:{},
     lastFetched: null,
     isFetching: false
   },

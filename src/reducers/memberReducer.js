@@ -15,18 +15,24 @@ const room = (state, action) => {
 
 export default function memberReducer(state = initialState.rooms, action) {
   switch (action.type) {
-    case types.ADD_ROOM_MEMBER:
+    case types.ADD_ROOM_MEMBER: {
       console.log(state, action);
-      if (state.data.map(r => r.email).includes(action.email)) {
+      const roomId = action.roomId;
+      const memberId = action.uid;
+      const roomMembers = roomId in state.data ? { ...state.data[roomId] } : {};
+      let roomsWithMembers = { ...state.data };
+      if (memberId in roomMembers) {
         return state;
-      } else {
-        let data = state.data.map(member => ({ ...member }));
-        data.push(room(undefined, action));
-        return {
-          ...state,
-          data
-        };
       }
+      roomMembers[memberId] = room(undefined, action);
+      roomsWithMembers[roomId] = { ...roomMembers };
+      return {
+        ...state,
+        data: {
+          ...roomsWithMembers
+        }
+      };
+    }
     case types.START_FETCHING_ROOMS_MEMBERS:
       return Object.assign({}, state, {
         isFetching: true

@@ -24,7 +24,7 @@ export class Members extends React.Component {
     } else {
       return (
         <MemberList
-          members={this.props.members.data}
+          members={this.props.members.data[this.props.roomId] || {}}
         />
       );
     }

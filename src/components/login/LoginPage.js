@@ -6,8 +6,8 @@ import LoginForm from './LoginForm';
 import toastr from 'toastr';
 
 export class RegistrationPage extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+    constructor(props, context) {
+      super(props, context);
 
     this.state = {
       user: {

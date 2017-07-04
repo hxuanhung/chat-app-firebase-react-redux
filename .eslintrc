@@ -11,6 +11,7 @@
     "ecmaVersion": 6,
     "sourceType": "module",
     "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
       "jsx": true
     }
   },
@@ -28,7 +29,7 @@
   },
   "rules": {
     "quotes": 0,
-    "no-console": 1,
+    "no-console": 0,
     "no-debugger": 1,
     "no-var": 1,
     "semi": [1, "always"],
@@ -39,8 +40,12 @@
     "no-alert": 0,
     "no-lone-blocks": 0,
     "jsx-quotes": 1,
-    "react/display-name": [ 1, {"ignoreTranspilerName": false }],
-    "react/forbid-prop-types": [1, {"forbid": ["any"]}],
+    "react/display-name": [1, {
+      "ignoreTranspilerName": false
+    }],
+    "react/forbid-prop-types": [1, {
+      "forbid": ["any"]
+    }],
     "react/jsx-boolean-value": 1,
     "react/jsx-closing-bracket-location": 0,
     "react/jsx-curly-spacing": 1,
@@ -64,11 +69,14 @@
     "react/no-set-state": 0,
     "react/no-unknown-property": 1,
     "react/prefer-es6-class": 1,
-    "react/prop-types": 1,
+    "react/prop-types": 0,
     "react/react-in-jsx-scope": 1,
     "react/require-extension": 1,
     "react/self-closing-comp": 1,
     "react/sort-comp": 1,
-    "react/wrap-multilines": 1
+    "react/wrap-multilines": 1,
+    "import/no-named-as-default": 0,
+    "comma-dangle": 0
   }
 }
+

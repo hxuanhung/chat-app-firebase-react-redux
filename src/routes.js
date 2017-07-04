@@ -5,6 +5,8 @@ import HomePage from './components/home/HomePage';
 import AdminPage from './components/admin/AdminPage';
 import ProtectedPage from './components/protected/ProtectedPage';
 import AboutPage from './components/about/AboutPage';
+import ChatPage from './components/chat/ChatPage';
+import Chats from './components/chat/Chats';
 import LoginPage from './components/login/LoginPage'; //eslint-disable-line import/no-named-as-default
 import RegistrationPage from './components/registration/RegistrationPage'; //eslint-disable-line import/no-named-as-default
 import {requireAdmin} from './actions/authActions';
@@ -22,6 +24,8 @@ export default function Routes(store) {
       <IndexRoute component={HomePage}/>
       <Route path="layout" component={Layout}/>
       <Route path="about" component={AboutPage}/>
+      <Route path="chats" component={Chats}/>
+      <Route path="chats/room/:id" component={ChatPage}/>
       <Route path="protected" component={ProtectedPage}/>
       <Route path="admin" component={AdminPage} onEnter={checkAdmin}/>
       <Route path="register" component={RegistrationPage}/>
